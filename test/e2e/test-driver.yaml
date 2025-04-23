@@ -1,0 +1,23 @@
+StorageClass:
+  FromName: true
+DriverInfo:
+  Name: filestorage.csi.scaleway.com
+  SupportedSizeRange:
+    Min: 100G
+  RequiredAccessModes:
+    - ReadWriteMany
+  Capabilities:
+    persistence: true
+    exec: true
+    multipods: true
+    RWX: true
+    # Although this driver supports controller expansion. We explicitly disable
+    # associated tests as the driver only supports size increments of 100G whereas
+    # the tests try to increment the volume size by 1Gi.
+    controllerExpansion: false
+    topology: true
+    capReadOnlyMany: true
+  TopologyKeys:
+    - topology.filestorage.csi.scaleway.com/region
+InlineVolumes:
+- Attributes: {}

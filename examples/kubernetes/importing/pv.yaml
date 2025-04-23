@@ -1,0 +1,22 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: test-pv
+spec:
+  capacity:
+    storage: 100G
+  volumeMode: Filesystem
+  accessModes:
+    - ReadWriteMany
+  storageClassName: scw-fs
+  csi:
+    driver: filestorage.csi.scaleway.com
+    volumeHandle: fr-par/11111111-1111-1111-111111111111
+  nodeAffinity:
+    required:
+      nodeSelectorTerms:
+      - matchExpressions:
+        - key: topology.filestorage.csi.scaleway.com/region
+          operator: In
+          values:
+          - fr-par
