@@ -8,7 +8,7 @@ Here is a list of features implemented by the Scaleway File Storage CSI driver.
 
 The Scaleway File Storage CSI driver implements the resize feature ([example for Kubernetes](https://kubernetes.io/blog/2018/07/12/resizing-persistent-volumes-using-kubernetes/)).
 It allows an online resize (without the need to detach the File System).
-However resizing can only be done upwards, decreasing a volume's size is not supported.
+However resizing is now supported in both directions; you can increase or decrease a volume's size as needed, following ([SFS-API documentation](https://confluence.infra.online.net/spaces/SBS/pages/250174364/SFS-API+REST+requests+quickstart+fr-srr#SFSAPIRESTrequestsquickstart(frsrr)-UpdateFilesystem)):
 
 ### ReadWriteMany (RWX) Volume
 

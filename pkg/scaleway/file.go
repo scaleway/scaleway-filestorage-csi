@@ -84,16 +84,16 @@ func (c *client) GetFileSystem(ctx context.Context, id string, region scw.Region
 	return fs, nil
 }
 
-// ExpandFileSystem increases the size of an existing FileSystem and waits for the
+// ResizeFileSystem increases or decreases the size of an existing FileSystem and waits for the
 // FileSystem to be in a terminal status.
-func (c *client) ExpandFileSystem(ctx context.Context, id string, region scw.Region, size int64) (*file.FileSystem, error) {
+func (c *client) ResizeFileSystem(ctx context.Context, id string, region scw.Region, size int64) (*file.FileSystem, error) {
 	fs, err := c.file.UpdateFileSystem(&file.UpdateFileSystemRequest{
 		Region:       region,
 		FilesystemID: id,
 		Size:         scw.Uint64Ptr(uint64(size)),
 	}, scw.WithContext(ctx))
 	if err != nil {
-		return nil, fmt.Errorf("failed to expand FileSystem: %w", err)
+		return nil, fmt.Errorf("failed to resize FileSystem: %w", err)
 	}
 
 	fs, err = c.waitForFileSystem(ctx, fs)

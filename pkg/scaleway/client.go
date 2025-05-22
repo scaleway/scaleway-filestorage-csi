@@ -16,7 +16,7 @@ type Client interface {
 	CreateFileSystem(ctx context.Context, name string, size int64, region scw.Region) (*file.FileSystem, error)
 	DeleteFileSystem(ctx context.Context, id string, region scw.Region) error
 	DetachFileSystem(ctx context.Context, serverID string, fsID string, zone scw.Zone) error
-	ExpandFileSystem(ctx context.Context, id string, region scw.Region, size int64) (*file.FileSystem, error)
+	ResizeFileSystem(ctx context.Context, id string, region scw.Region, size int64) (*file.FileSystem, error)
 	GetFileSystem(ctx context.Context, id string, region scw.Region) (*file.FileSystem, error)
 	GetFileSystemByName(ctx context.Context, name string, region scw.Region) (*file.FileSystem, error)
 }

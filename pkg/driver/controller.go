@@ -272,7 +272,7 @@ func (d *controllerService) ControllerExpandVolume(ctx context.Context, req *csi
 			return fs, nil
 		}
 
-		fs, err = d.scaleway.ExpandFileSystem(ctx, id, region, size)
+		fs, err = d.scaleway.ResizeFileSystem(ctx, id, region, size)
 		if err != nil {
 			return nil, status.Error(codeFromScalewayError(err), err.Error())
 		}

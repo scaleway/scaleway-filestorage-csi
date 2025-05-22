@@ -141,7 +141,7 @@ func (f *FakeClient) DetachFileSystem(ctx context.Context, serverID string, fsID
 	return nil
 }
 
-func (f *FakeClient) ExpandFileSystem(ctx context.Context, id string, region scw.Region, size int64) (*file.FileSystem, error) {
+func (f *FakeClient) ResizeFileSystem(ctx context.Context, id string, region scw.Region, size int64) (*file.FileSystem, error) {
 	f.mu.Lock()
 	defer f.mu.Unlock()
 
