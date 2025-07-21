@@ -13,11 +13,13 @@ import (
 	"os/exec"
 	"path/filepath"
 	"strings"
+	"time"
 
 	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
 	"github.com/pkg/sftp"
 	"github.com/scaleway/scaleway-filestorage-csi/pkg/driver"
+	"github.com/scaleway/scaleway-sdk-go/api/block/v1"
 	"github.com/scaleway/scaleway-sdk-go/api/instance/v1"
 	"github.com/scaleway/scaleway-sdk-go/api/marketplace/v2"
 	"github.com/scaleway/scaleway-sdk-go/scw"
@@ -53,9 +55,52 @@ var _ = Describe("Sanity", func() {
 		DeferCleanup(func(ctx SpecContext) {
 			_, err = instanceAPI.ServerAction(&instance.ServerActionRequest{
 				ServerID: server.Server.ID,
-				Action:   instance.ServerActionTerminate,
+				Action:   instance.ServerActionPoweroff,
 			}, scw.WithContext(ctx))
 			Expect(err).NotTo(HaveOccurred())
+
+			_, err = instanceAPI.WaitForServer(&instance.WaitForServerRequest{
+				ServerID: server.Server.ID,
+				Zone:     server.Server.Zone,
+			}, scw.WithContext(ctx))
+			Expect(err).ToNot(HaveOccurred())
+
+			for _, volume := range server.Server.Volumes {
+				Expect(volume.VolumeType).To(Equal(instance.VolumeServerVolumeTypeSbsVolume))
+
+				_, err := instanceAPI.DetachServerVolume(&instance.DetachServerVolumeRequest{
+					Zone:     server.Server.Zone,
+					ServerID: server.Server.ID,
+					VolumeID: volume.ID,
+				}, scw.WithContext(ctx))
+				Expect(err).ToNot(HaveOccurred())
+
+				Eventually(func() error {
+					volume, err := blockAPI.GetVolume(&block.GetVolumeRequest{
+						Zone:     server.Server.Zone,
+						VolumeID: volume.ID,
+					}, scw.WithContext(ctx))
+					if err != nil {
+						return err
+					}
+
+					if volume.Status != block.VolumeStatusAvailable {
+						return fmt.Errorf("volume is not available: %s", volume.Status)
+					}
+
+					return nil
+				}).WithContext(ctx).WithTimeout(time.Minute).ProbeEvery(time.Second).Should(Succeed())
+
+				Expect(blockAPI.DeleteVolume(&block.DeleteVolumeRequest{
+					Zone:     server.Server.Zone,
+					VolumeID: volume.ID,
+				}, scw.WithContext(ctx))).To(Succeed())
+			}
+
+			Expect(instanceAPI.DeleteServer(&instance.DeleteServerRequest{
+				Zone:     server.Server.Zone,
+				ServerID: server.Server.ID,
+			}, scw.WithContext(ctx))).To(Succeed())
 		})
 
 		// Poweron server and wait for it to start.
@@ -71,11 +116,11 @@ var _ = Describe("Sanity", func() {
 
 		// Make sure instance is running and has an IP.
 		Expect(server.Server.State).To(Equal(instance.ServerStateRunning))
-		Expect(server.Server.PublicIP).ToNot(BeNil())
+		Expect(server.Server.PublicIPs).ToNot(BeEmpty())
 
 		By("Connecting to the instance")
 		client := &sshClient{
-			Address: server.Server.PublicIP.Address.String(),
+			Address: server.Server.PublicIPs[0].Address.String(),
 			Signer:  sshSigner,
 		}
 		Eventually(client.Open).WithContext(ctx).Should(Succeed())
