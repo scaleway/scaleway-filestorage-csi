@@ -10,14 +10,14 @@ jobs:
         platform: [ubuntu-latest]
     runs-on: ${{ matrix.platform }}
     steps:
-    - name: Install Go
-      uses: actions/setup-go@v5
-      with:
-        go-version-file: go.mod
     - name: checkout
       uses: actions/checkout@v4
       with:
         fetch-depth: 1
+    - name: Install Go
+      uses: actions/setup-go@v5
+      with:
+        go-version-file: go.mod
     - name: Run unit tests
       run: make test
   build-test:
@@ -27,13 +27,13 @@ jobs:
         arch: [386, amd64, arm, arm64]
     runs-on: ${{ matrix.platform }}
     steps:
-    - name: Install Go
-      uses: actions/setup-go@v5
-      with:
-        go-version-file: go.mod
     - name: checkout
       uses: actions/checkout@v4
       with:
         fetch-depth: 1
+    - name: Install Go
+      uses: actions/setup-go@v5
+      with:
+        go-version-file: go.mod
     - name: Building binary
       run: GOARCH=${{ matrix.arch }} make compile
