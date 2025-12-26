@@ -10,7 +10,7 @@ require (
 	github.com/onsi/ginkgo/v2 v2.23.4
 	github.com/onsi/gomega v1.37.0
 	github.com/pkg/sftp v1.13.10
-	github.com/scaleway/scaleway-sdk-go v1.0.0-beta.34
+	github.com/scaleway/scaleway-sdk-go v1.0.0-beta.35
 	golang.org/x/crypto v0.45.0
 	golang.org/x/sync v0.18.0
 	google.golang.org/grpc v1.77.0
