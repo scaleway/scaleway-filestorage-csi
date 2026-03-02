@@ -8,5 +8,5 @@ spec:
   resources:
     requests:
       storage: 100G
-  storageClassName: scw-fs
+  storageClassName: sfs-standard
   volumeName: test-pv
