@@ -17,7 +17,7 @@ import (
 	"k8s.io/klog/v2"
 )
 
-const MinVolumeSize = 100000000000 // 100GB.
+const MinVolumeSize = 25000000000 // 25GB.
 
 var (
 	// controllerCapabilities represents the capabilites of the controller.
