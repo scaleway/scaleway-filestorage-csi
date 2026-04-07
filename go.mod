@@ -13,7 +13,7 @@ require (
 	github.com/scaleway/scaleway-sdk-go v1.0.0-beta.36
 	golang.org/x/crypto v0.47.0
 	golang.org/x/sync v0.20.0
-	google.golang.org/grpc v1.79.3
+	google.golang.org/grpc v1.80.0
 	k8s.io/api v0.35.3
 	k8s.io/apimachinery v0.35.3
 	k8s.io/client-go v0.35.3
@@ -55,8 +55,8 @@ require (
 	golang.org/x/text v0.33.0 // indirect
 	golang.org/x/time v0.9.0 // indirect
 	golang.org/x/tools v0.41.0 // indirect
-	google.golang.org/genproto/googleapis/rpc v0.0.0-20251202230838-ff82c1b0f217 // indirect
-	google.golang.org/protobuf v1.36.10 // indirect
+	google.golang.org/genproto/googleapis/rpc v0.0.0-20260120221211-b8f7ae30c516 // indirect
+	google.golang.org/protobuf v1.36.11 // indirect
 	gopkg.in/evanphx/json-patch.v4 v4.13.0 // indirect
 	gopkg.in/inf.v0 v0.9.1 // indirect
 	gopkg.in/yaml.v2 v2.4.0 // indirect
