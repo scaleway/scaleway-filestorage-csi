@@ -7,7 +7,7 @@ It will cover [Persistent Volumes/Persistent Volume Claims (PV/PVC)](https://kub
 and [Storage Classes](https://kubernetes.io/docs/concepts/storage/storage-classes/).
 
 If a [StorageClass](https://kubernetes.io/docs/concepts/storage/storage-classes/)
-is not provided in the examples, the `scw-fs` storage class will be used.
+is not provided in the examples, the `sfs-standard` storage class will be used.
 
 ## PVC & Deployment
 
@@ -41,7 +41,7 @@ spec:
   volumeMode: Filesystem
   accessModes:
     - ReadWriteOnce
-  storageClassName: scw-fs
+  storageClassName: sfs-standard
   csi:
     driver: filestorage.csi.scaleway.com
     volumeHandle: fr-par/11111111-1111-1111-111111111111
@@ -55,7 +55,7 @@ spec:
           - fr-par
 ```
 
-Once the PV is created, create a PVC with the same attributes (here `scw-fs`
+Once the PV is created, create a PVC with the same attributes (here `sfs-standard`
 as storage class and a size of 100G):
 
 ```bash
@@ -73,7 +73,7 @@ kubectl apply -f importing/pod.yaml
 [StorageClasses](https://kubernetes.io/docs/concepts/storage/storage-classes/)
 offer a way to easily create different types of [Volumes](https://kubernetes.io/docs/concepts/storage/persistent-volumes/).
 
-In the installation guide, a basic storage class is deployed: `scw-fs` that
+In the installation guide, a basic storage class is deployed: `sfs-standard` that
 will provision standard Scaleway File Systems. We will see here how to customize
 different storage classes. The provisioner will always be `filestorage.csi.scaleway.com`.
 
